@@ -3,7 +3,6 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -51,12 +50,32 @@ where
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
         //TODO
+        if self.root.is_none() {
+            self.root = Some(Box::new(TreeNode::new(value)));
+        } else {
+            self.root.as_mut().unwrap().insert(value);
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
         //TODO
-        true
+        fn dfs<T: std::cmp::Ord>(node: &Option<Box<TreeNode<T>>>, value: T) -> bool {
+            match node {
+                Some(n) => {
+                    if n.value == value {
+                        return true;
+                    } else if n.value > value {
+                        return dfs(&n.left, value);
+                    } else {
+                        return dfs(&n.right, value);
+                    }
+                },
+                None => return false,
+            }
+        }
+
+        dfs(&(self.root), value)
     }
 }
 
@@ -66,7 +85,26 @@ where
 {
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
-        //TODO
+        // fn gettype(a: u32) {}
+        // gettype(self);
+        // from func above, got the type of self: &mut TreeNode<T>
+        if self.value == value {
+            return;
+        } else if self.value > value {
+            // value move to left
+            if self.left.is_none() {
+                self.left = Some(Box::new(TreeNode::new(value)));
+            } else {
+                self.left.as_mut().unwrap().insert(value);
+            }
+        } else {
+            // value move to right
+            if self.right.is_none() {
+                self.right = Some(Box::new(TreeNode::new(value)));
+            } else {
+                self.right.as_mut().unwrap().insert(value);
+            }
+        }
     }
 }
 
